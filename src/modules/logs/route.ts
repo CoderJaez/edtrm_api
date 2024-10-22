@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { getLogs } from "./controller";
+import { get } from "./controller";
 const router = Router();
 
-router.get('/', getLogs)
+router.get('/', get)
 
 export default router

@@ -5,9 +5,9 @@ dotenv.config()
 const { DB_HOST, DB_NAME, DB_UNAME, DB_PASSWORD, DB_PORT } = process.env
 
 export const options = {
-    host: DB_HOST,
-    port: DB_PORT,
-    database: DB_NAME,
-    user: DB_UNAME,
-    password: DB_PASSWORD,
+    host: DB_HOST as string,
+    port: DB_PORT as any,
+    database: DB_NAME as string,
+    user: DB_UNAME as string,
+    password: DB_PASSWORD as string,
 }
