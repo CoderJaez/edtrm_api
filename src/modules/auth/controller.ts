@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-
 const signIn = async (req: Request, res: Response) => {
     const data = req.body
 
