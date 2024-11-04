@@ -1,5 +1,6 @@
 import Firebird from 'node-firebird'
 import { options } from '../../configs/database'
+import moment from 'moment';
 
 const whereClause = (
     division_code?: string,
@@ -47,9 +48,7 @@ const whereClause = (
 
 const getLogs = async (page: number, pageSize: number, division_code?: string, time_inout?: string, employee?: string) => {
     const { clause, values } = whereClause(division_code, time_inout, employee);
-    console.log(division_code, time_inout, employee);
-    console.log(clause);
-
+    const dateToday = moment().format('DD.MM.YYYY')
     return new Promise((resolve, reject) => {
         Firebird.attach(options, function (err, db) {
             if (err) {
@@ -62,7 +61,7 @@ const getLogs = async (page: number, pageSize: number, division_code?: string, t
                 Firebird.ISOLATION_READ_COMMITTED,
                 function (err, transaction) {
                     transaction.query(
-                        `SELECT FIRST ${pageSize} SKIP ${skip} r.LOGTIME, r.IDNUM, r.INOUT, r.LON, r.LAT,e.EMPNAME, e.DIVISIONCODE  FROM LOG r inner join EMPLOYEE e on e.BIONUM = r.IDNUM ${clause ? clause : ""}  order by r.LOGTIME desc`,
+                        `SELECT r.LOGTIME, r.IDNUM, r.INOUT, r.LON, r.LAT,e.EMPNAME, e.DIVISIONCODE  FROM LOG r inner join EMPLOYEE e on e.BIONUM = r.IDNUM ${clause ? clause : `WHERE r.LOGTIME >= '${dateToday}'`}  order by r.LOGTIME desc`,
                         values ? values : [],
                         function (errQry1, result) {
                             if (errQry1) {

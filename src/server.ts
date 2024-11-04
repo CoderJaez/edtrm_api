@@ -34,7 +34,7 @@ const bootstrap = () => {
         .use(express.json())
         .use("/public/uploads", express.static(__dirname + "/public/uploads"))
         .use(`${API_URL}auth`, authRouter)
-        .use(`${API_URL}logs`, authMiddleware as any, logRouter)
+        .use(`${API_URL}logs`, logRouter)
         .use("*", (res: Response) => {
             res.status(404).json({ message: "URL not found." })
         })
